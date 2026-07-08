@@ -12,6 +12,27 @@ document.addEventListener('DOMContentLoaded', () => {
     onScroll();
   }
 
+  /* ── Mobile hamburger menu ─────────────────────────── */
+  const navToggle = document.querySelector('.nav-toggle');
+  if (nav && navToggle) {
+    const closeMenu = () => {
+      nav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    };
+    navToggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.classList.toggle('nav-open', open);
+    });
+    nav.querySelectorAll('.nav-links a').forEach(a =>
+      a.addEventListener('click', closeMenu)
+    );
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeMenu();
+    });
+  }
+
   /* ── Scroll reveal ─────────────────────────────────── */
   const reveals = document.querySelectorAll('.reveal');
   if (reveals.length && 'IntersectionObserver' in window) {

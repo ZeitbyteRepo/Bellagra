@@ -84,6 +84,8 @@ section { padding: var(--section) 0; }
   font-family: var(--serif);
   font-size: 1.6rem;
   color: var(--text);
+  position: relative;
+  z-index: 110;
 }
 .nav-links { display: flex; gap: 2rem; list-style: none; }
 .nav-links a {
@@ -93,6 +95,27 @@ section { padding: var(--section) 0; }
   color: var(--text-muted);
 }
 .nav-links a:hover { color: var(--text); }
+
+/* Hamburger toggle — hidden on desktop, shown on mobile */
+.nav-toggle {
+  display: none;
+  position: relative;
+  z-index: 110;
+  width: 30px; height: 22px;
+  background: none; border: none; padding: 0; cursor: pointer;
+}
+.nav-toggle span {
+  position: absolute; left: 0;
+  width: 100%; height: 2px;
+  background: var(--text);
+  transition: transform .3s ease, opacity .2s ease, top .3s ease;
+}
+.nav-toggle span:nth-child(1) { top: 0; }
+.nav-toggle span:nth-child(2) { top: 10px; }
+.nav-toggle span:nth-child(3) { top: 20px; }
+.nav.open .nav-toggle span:nth-child(1) { top: 10px; transform: rotate(45deg); }
+.nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
+.nav.open .nav-toggle span:nth-child(3) { top: 10px; transform: rotate(-45deg); }
 
 /* ── Hero ─────────────────────────────────────────────── */
 .hero {
@@ -393,8 +416,31 @@ section { padding: var(--section) 0; }
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 768px) {
   :root { --section: 5rem; --hero-h: 80vh; }
-  .nav { padding: 1rem; }
-  .nav-links { gap: 1rem; }
+  .nav { padding: 1rem 1.25rem; }
+  .nav-toggle { display: block; }
+
+  /* Full-screen slide-in overlay menu */
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    background: var(--bg);
+    transform: translateX(100%);
+    transition: transform .4s cubic-bezier(.4, 0, .2, 1);
+  }
+  .nav.open { mix-blend-mode: normal; }
+  .nav.open .nav-links { transform: translateX(0); }
+  .nav-links a {
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text);
+  }
+  body.nav-open { overflow: hidden; }
   .feature { grid-template-columns: 1fr; gap: 2rem; direction: ltr; padding: 3rem 0; }
   .feature:nth-child(even) .feature-text { direction: ltr; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
