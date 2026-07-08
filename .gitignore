@@ -1,0 +1,2 @@
+# Keep uncompressed source video out of the repo (GitHub blocks >100MB)
+*.original.mp4
